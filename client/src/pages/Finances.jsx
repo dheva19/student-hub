@@ -50,6 +50,7 @@ export default function Finances() {
   // Modal
   const [modalOpen, setModalOpen] = useState(false);
   const [txType, setTxType] = useState('expense');
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     category: 'food',
     amount: '',
@@ -90,6 +91,8 @@ export default function Finances() {
 
   const handleSaveTransaction = async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
     try {
       const payload = {
         ...formData,
@@ -105,6 +108,8 @@ export default function Finances() {
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Gagal menyimpan transaksi');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -385,16 +390,24 @@ export default function Finances() {
               <div className="mt-4 pt-2 border-t border-zinc-100 flex items-center justify-end gap-2">
                 <button
                   type="button"
+                  disabled={submitting}
                   onClick={() => setModalOpen(false)}
-                  className="px-3 py-1.5 text-xs text-zinc-600 hover:bg-zinc-100 rounded-md"
+                  className="px-3 py-1.5 text-xs text-zinc-600 hover:bg-zinc-100 rounded-md disabled:opacity-50"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-white rounded-md"
+                  disabled={submitting}
+                  className="px-3 py-1.5 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-white rounded-md flex items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Simpan Transaksi
+                  {submitting && (
+                    <svg className="animate-spin h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  )}
+                  <span>{submitting ? 'Menyimpan Transaksi...' : 'Simpan Transaksi'}</span>
                 </button>
               </div>
             </form>

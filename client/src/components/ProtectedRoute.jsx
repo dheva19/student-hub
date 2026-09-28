@@ -7,10 +7,19 @@ export default function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm font-medium text-slate-500">Memuat Student Life Hub...</p>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="w-full max-w-sm bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm animate-pulse space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-zinc-200"></div>
+            <div className="space-y-1.5 flex-1">
+              <div className="h-3.5 w-3/4 bg-zinc-200 rounded"></div>
+              <div className="h-2.5 w-1/2 bg-zinc-100 rounded"></div>
+            </div>
+          </div>
+          <div className="space-y-2 pt-2">
+            <div className="h-3 bg-zinc-100 rounded w-full"></div>
+            <div className="h-3 bg-zinc-100 rounded w-5/6"></div>
+          </div>
         </div>
       </div>
     );
