@@ -13,23 +13,27 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Sambungkan Database Mongoose untuk setiap request jika belum terhubung (Serverless lifecycle)
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-  } catch (err) {
-    console.error('Database connection middleware failed:', err.message);
-  }
-  next();
-});
-
-// Health check endpoint
+// Health check endpoint (Bisa diakses tanpa koneksi database)
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
     message: 'Student Life Hub API is running',
     timestamp: new Date().toISOString(),
   });
+});
+
+// Sambungkan Database Mongoose untuk setiap request API
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('Database connection failed:', err.message);
+    return res.status(500).json({
+      success: false,
+      message: `Koneksi Database Gagal: ${err.message}. Pastikan MONGODB_URI sudah disetel di Vercel Environment Variables.`,
+    });
+  }
 });
 
 // Mount Routes (Mengarah ke folder ../server/routes)
@@ -61,5 +65,5 @@ if (!process.env.VERCEL) {
   });
 }
 
-// Export untuk Vercel Serverless Function (Hanya 1 fungsi terdaftar)
+// Export untuk Vercel Serverless Function
 module.exports = app;

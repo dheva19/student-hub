@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 /**
  * Global cache for Mongoose connection in Serverless environments (Vercel).
- * This prevents creating multiple connection pools across lambda invocations.
  */
 let cached = global.mongoose;
 
@@ -14,19 +13,18 @@ async function connectDB() {
   const uri = process.env.MONGODB_URI;
 
   if (!uri) {
-    console.warn('⚠️ MONGODB_URI is not defined in environment variables.');
-    return null;
+    throw new Error('Variabel MONGODB_URI belum diisi di Vercel Environment Variables');
   }
 
-  if (cached.conn) {
+  if (cached.conn && mongoose.connection.readyState === 1) {
     return cached.conn;
   }
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
+      bufferCommands: true,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000,
     };
 
     cached.promise = mongoose.connect(uri, opts).then((mongooseInstance) => {
