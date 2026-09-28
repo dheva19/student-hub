@@ -192,6 +192,52 @@ export default function Tasks() {
     );
   };
 
+  if (loading) {
+    return (
+      <div className="space-y-6 max-w-6xl mx-auto animate-pulse">
+        {/* Header Skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-zinc-200 gap-3">
+          <div className="space-y-2">
+            <div className="h-6 w-36 bg-zinc-200 rounded-md"></div>
+            <div className="h-3.5 w-60 bg-zinc-100 rounded-md"></div>
+          </div>
+          <div className="flex gap-2">
+            <div className="h-8 w-20 bg-zinc-200 rounded-lg"></div>
+            <div className="h-8 w-28 bg-zinc-200 rounded-lg"></div>
+          </div>
+        </div>
+
+        {/* Filter Bar Skeleton */}
+        <div className="bg-white p-3 rounded-xl border border-zinc-200 flex items-center justify-between gap-3">
+          <div className="h-8 w-64 bg-zinc-100 rounded-lg"></div>
+          <div className="h-8 w-36 bg-zinc-100 rounded-lg"></div>
+        </div>
+
+        {/* 3 Columns Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[1, 2, 3].map((col) => (
+            <div key={col} className="bg-zinc-100/60 rounded-xl p-3 border border-zinc-200/80 space-y-3 min-h-[400px]">
+              <div className="flex justify-between items-center pb-2 border-b border-zinc-200">
+                <div className="h-4 w-24 bg-zinc-200 rounded"></div>
+                <div className="h-4 w-6 bg-zinc-200 rounded"></div>
+              </div>
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white p-3 rounded-lg border border-zinc-200 space-y-2.5">
+                  <div className="flex justify-between">
+                    <div className="h-3 w-20 bg-zinc-100 rounded"></div>
+                    <div className="h-3 w-12 bg-zinc-100 rounded"></div>
+                  </div>
+                  <div className="h-4 w-3/4 bg-zinc-200 rounded"></div>
+                  <div className="h-2.5 w-1/2 bg-zinc-100 rounded"></div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
       {/* Header */}

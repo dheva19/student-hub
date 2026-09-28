@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { User, School, BookOpen, GraduationCap, Save, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -14,8 +14,20 @@ export default function Profile() {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
 
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        university: user.university || '',
+        major: user.major || '',
+        semester: user.semester || 1,
+      });
+    }
+  }, [user]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
     setSuccessMsg('');
     try {
