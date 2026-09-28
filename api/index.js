@@ -53,9 +53,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server saat dijalankan langsung (Local development)
-const PORT = process.env.PORT || 5000;
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+// Start server hanya saat dijalankan lokal (Bukan di Vercel Serverless)
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`🚀 Server berjalan di http://localhost:${PORT}`);
   });
