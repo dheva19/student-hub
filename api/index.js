@@ -1,14 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db');
+const connectDB = require('../server/config/db');
 
 // Inisialisasi Express
 const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: '*', // Diizinkan untuk fleksibilitas Vercel preview & production
+  origin: '*',
   credentials: true,
 }));
 app.use(express.json());
@@ -32,12 +32,12 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Mount Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/schedules', require('./routes/scheduleRoutes'));
-app.use('/api/tasks', require('./routes/taskRoutes'));
-app.use('/api/materials', require('./routes/materialRoutes'));
-app.use('/api/finances', require('./routes/financeRoutes'));
+// Mount Routes (Mengarah ke folder ../server/routes)
+app.use('/api/auth', require('../server/routes/authRoutes'));
+app.use('/api/schedules', require('../server/routes/scheduleRoutes'));
+app.use('/api/tasks', require('../server/routes/taskRoutes'));
+app.use('/api/materials', require('../server/routes/materialRoutes'));
+app.use('/api/finances', require('../server/routes/financeRoutes'));
 
 // 404 Handler untuk API
 app.use('/api/*', (req, res) => {
@@ -61,5 +61,5 @@ if (!process.env.VERCEL) {
   });
 }
 
-// Export untuk Vercel Serverless Function
+// Export untuk Vercel Serverless Function (Hanya 1 fungsi terdaftar)
 module.exports = app;
